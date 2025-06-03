@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدرسة الثروات الوطنية الخاصة - التسجيل للعام الدراسي 2025-2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#1E40AF',
+                        accent: '#10B981',
+                        gold: '#F59E0B'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #5D5CDE 0%, #1E40AF 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .grade-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .grade-item:hover {
+            background-color: rgba(93, 92, 222, 0.1);
+        }
+        .grade-item.selected {
+            background-color: rgba(93, 92, 222, 0.2);
+            border-color: #5D5CDE;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="text-center">
+                <div class="floating">
+                    <i class="fas fa-graduation-cap text-6xl mb-4 text-yellow-300"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-2 animate-fade-in">مدرسة الثروات الوطنية الخاصة</h1>
+                <h2 class="text-2xl md:text-3xl font-semibold mb-4 text-yellow-200">National Wealth Private School</h2>
+                <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4 inline-block">
+                    <p class="text-xl font-bold">التسجيل مفتوح للعام الدراسي الجديد</p>
+                    <p class="text-lg">2025 - 2026</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Welcome Section -->
+        <section class="text-center mb-12 animate-fade-in">
+            <h3 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">مرحباً بكم في مدرستنا</h3>
+            <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                نحن فخورون بتقديم تعليم متميز وشامل لأبنائكم في بيئة تعليمية حديثة ومتطورة. 
+                ندعوكم للانضمام إلى عائلتنا التعليمية والاستفادة من برامجنا المتنوعة وخدماتنا المتميزة.
+            </p>
+        </section>
+
+        <!-- Working Hours -->
+        <section class="mb-12">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover border-t-4 border-gold">
+                <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+                    <i class="fas fa-clock text-gold ml-3"></i>
+                    ساعات العمل
+                </h3>
+                <div class="text-center">
+                    <div class="inline-block bg-gold/10 dark:bg-gold/20 rounded-lg p-6">
+                        <p class="text-xl font-bold text-gray-800 dark:text-white mb-2">
+                            الاتنين إلى الجمعة
+                        </p>
+                        <p class="text-2xl font-bold text-gold">
+                            7:00 صباحاً - 2:30 مساءً
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fees Section -->
+        <section class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">
+                <i class="fas fa-money-bill-wave text-accent ml-3"></i>
+                الرسوم الدراسية لجميع الصفوف
+            </h3>
+            
+            <!-- Grade Selection -->
+            <div class="mb-8">
+                <h4 class="text-xl font-bold text-center text-gray-800 dark:text-white mb-4">اختر الصف الدراسي</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="kg1">
+                        <span class="font-bold">KG1</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="kg2">
+                        <span class="font-bold">KG2</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="1">
+                        <span class="font-bold">الأول</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="2">
+                        <span class="font-bold">الثاني</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="3">
+                        <span class="font-bold">الثالث</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="4">
+                        <span class="font-bold">الرابع</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="5">
+                        <span class="font-bold">الخامس</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="6">
+                        <span class="font-bold">السادس</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="7">
+                        <span class="font-bold">السابع</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="8">
+                        <span class="font-bold">الثامن</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="9">
+                        <span class="font-bold">التاسع</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="10">
+                        <span class="font-bold">العاشر</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="11">
+                        <span class="font-bold">الحادي عشر</span>
+                    </div>
+                    <div class="grade-item bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-3 text-center" data-grade="12">
+                        <span class="font-bold">الثاني عشر</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fees Display -->
+            <div id="feesDisplay" class="grid md:grid-cols-2 gap-8" style="display: none;">
+                <!-- Without Transportation -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover border-t-4 border-primary">
+                    <h4 class="text-2xl font-bold text-primary mb-6 text-center">
+                        <i class="fas fa-walking ml-2"></i>
+                        بدون النقل المدرسي
+                    </h4>
+                    <div class="space-y-4" id="feesWithoutTransport">
+                        <!-- Fees will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- With Transportation -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover border-t-4 border-accent">
+                    <h4 class="text-2xl font-bold text-accent mb-6 text-center">
+                        <i class="fas fa-bus ml-2"></i>
+                        مع النقل المدرسي
+                    </h4>
+                    <div class="space-y-4" id="feesWithTransport">
+                        <!-- Fees will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Note -->
+            <div class="mt-8 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4" id="paymentNote" style="display: none;">
+               
+            </div>
+        </section>
+
+        <!-- School Location -->
+        <section class="mb-12">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+                    <i class="fas fa-map-marker-alt text-red-500 ml-3"></i>
+                    موقع المدرسة
+                </h3>
+                <div class="text-center">
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">
+                        دولة الإمارات العربية المتحدة - أبوظبي - بني ياس
+                    </p>
+                    <a href="https://maps.app.goo.gl/nioNbJJ5Lpxo83Tv8" class="inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-directions ml-2"></i>
+                        عرض الموقع على الخريطة
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">
+                <i class="fas fa-phone text-primary ml-3"></i>
+                وسائل التواصل
+            </h3>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- WhatsApp -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center card-hover border-t-4 border-green-500">
+                    <div class="bg-green-100 dark:bg-green-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-whatsapp text-3xl text-green-500"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-2 text-gray-800 dark:text-white">واتساب</h4>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">تواصل معنا عبر الواتساب</p>
+                    <a href="https://wa.me/971501234567" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        <i class="fab fa-whatsapp ml-2"></i>
+                        إرسال رسالة
+                    </a>
+                </div>
+
+                <!-- Email -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center card-hover border-t-4 border-blue-500">
+                    <div class="bg-blue-100 dark:bg-blue-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope text-3xl text-blue-500"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-2 text-gray-800 dark:text-white">البريد الإلكتروني</h4>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">راسلنا على الإيميل</p>
+                    <a href="9254@adek.gov.ae" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        <i class="fas fa-envelope ml-2"></i>
+                        إرسال إيميل
+                    </a>
+                </div>
+
+                <!-- Phone -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center card-hover border-t-4 border-purple-500">
+                    <div class="bg-purple-100 dark:bg-purple-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-phone text-3xl text-purple-500"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-2 text-gray-800 dark:text-white">الاتصال المباشر</h4>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">اتصل بنا مباشرة</p>
+                    <a href="tel:+971212345678" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        <i class="fas fa-phone ml-2"></i>
+                        اتصال مباشر
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Button -->
+        <section class="text-center mb-12">
+            <div class="bg-gradient-to-r from-primary to-secondary rounded-xl p-8 text-white">
+                <h3 class="text-3xl font-bold mb-4">ابدأ رحلة التعلم معنا!</h3>
+                <p class="text-xl mb-6">سجل الآن ولا تفوت الفرصة</p>
+                <button class="bg-white text-primary hover:bg-gray-100 font-bold py-4 px-8 rounded-lg text-xl transition duration-300 shadow-lg">
+                    <i class="fas fa-user-plus ml-2"></i>
+                    التسجيل الآن
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 dark:bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <div class="border-t border-gray-700 pt-6">
+                    <p class="mb-2">© 2025 جميع الحقوق محفوظة - مدرسة الثروات الوطنية الخاصة</p>
+                    <p class="text-gray-400">تم التصميم من قبل المهندس حسين نقد</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Grade fees data (in AED) - Based on school's official fee structure
+        const gradeFees = {
+            'kg1': {
+                academic: 10100,
+                books: 300,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 10800,
+                totalWithTransport: 14300
+            },
+            'kg2': {
+                academic: 10100,
+                books: 330,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 10830,
+                totalWithTransport: 14330
+            },
+            '1': {
+                academic: 10400,
+                books: 550,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 11350,
+                totalWithTransport: 14850
+            },
+            '2': {
+                academic: 10400,
+                books: 550,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 11350,
+                totalWithTransport: 14850
+            },
+            '3': {
+                academic: 10775,
+                books: 605,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 11780,
+                totalWithTransport: 15280
+            },
+            '4': {
+                academic: 10775,
+                books: 715,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 11890,
+                totalWithTransport: 15390
+            },
+            '5': {
+                academic: 10875,
+                books: 715,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 11990,
+                totalWithTransport: 15490
+            },
+            '6': {
+                academic: 10875,
+                books: 715,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 11990,
+                totalWithTransport: 15490
+            },
+            '7': {
+                academic: 11075,
+                books: 715,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 12190,
+                totalWithTransport: 15690
+            },
+            '8': {
+                academic: 11075,
+                books: 715,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 12190,
+                totalWithTransport: 15690
+            },
+            '9': {
+                academic: 11075,
+                books: 825,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 12300,
+                totalWithTransport: 15800
+            },
+            '10': {
+                academic: 11200,
+                books: 990,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 12590,
+                totalWithTransport: 16090
+            },
+            '11': {
+                academic: 11200,
+                books: 1100,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 12700,
+                totalWithTransport: 16200
+            },
+            '12': {
+                academic: 12200,
+                books: 1155,
+                uniform: 400,
+                transport: 3500,
+                totalWithoutTransport: 13755,
+                totalWithTransport: 17255
+            }
+        };
+
+        // Dark mode support
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Grade selection functionality
+        document.querySelectorAll('.grade-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove selected class from all items
+                document.querySelectorAll('.grade-item').forEach(i => i.classList.remove('selected'));
+                
+                // Add selected class to clicked item
+                this.classList.add('selected');
+                
+                // Get grade data
+                const grade = this.dataset.grade;
+                const fees = gradeFees[grade];
+                
+                // Show fees display
+                document.getElementById('feesDisplay').style.display = 'grid';
+                document.getElementById('paymentNote').style.display = 'block';
+                
+                // Populate fees without transport
+                document.getElementById('feesWithoutTransport').innerHTML = `
+                    <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
+                        <span class="font-semibold">الرسوم الدراسيه</span>
+                        <span class="text-accent font-bold">${fees.academic.toLocaleString()} درهم</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
+                        <span class="font-semibold">رسوم الكتب</span>
+                        <span class="text-accent font-bold">${fees.books} درهم</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
+                        <span class="font-semibold">رسوم الزي المدرسي</span>
+                        <span class="text-accent font-bold">${fees.uniform} درهم</span>
+                    </div>
+                    <div class="bg-gradient-to-r from-primary to-secondary text-white p-4 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">الإجمالي</span>
+                            <span class="text-2xl font-bold">${fees.totalWithoutTransport.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Populate fees with transport
+                document.getElementById('feesWithTransport').innerHTML = `
+                    <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
+                        <span class="font-semibold">الرسوم الدراسية</span>
+                        <span class="text-accent font-bold">${fees.academic.toLocaleString()} درهم</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
+                        <span class="font-semibold">رسوم الكتب</span>
+                        <span class="text-accent font-bold">${fees.books} درهم</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
+                        <span class="font-semibold">رسوم الزي المدرسي</span>
+                        <span class="text-accent font-bold">${fees.uniform} درهم</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
+                        <span class="font-semibold">رسوم النقل المدرسي</span>
+                        <span class="text-accent font-bold">${fees.transport.toLocaleString()} درهم</span>
+                    </div>
+                    <div class="bg-gradient-to-r from-accent to-primary text-white p-4 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">الإجمالي</span>
+                            <span class="text-2xl font-bold">${fees.totalWithTransport.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Scroll to fees section
+                document.getElementById('feesDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add loading animation to buttons
+        document.querySelectorAll('button, a').forEach(element => {
+            element.addEventListener('click', function() {
+                if (!this.href || this.href.startsWith('#')) {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
