@@ -63,6 +63,12 @@
             background-color: rgba(93, 92, 222, 0.2);
             border-color: #5D5CDE;
         }
+        .semester-card {
+            transition: all 0.3s ease;
+        }
+        .semester-card:hover {
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
@@ -195,9 +201,62 @@
                 </div>
             </div>
 
+            <!-- Installment Details -->
+            <div class="mt-8" id="installmentDetails" style="display: none;">
+                <h4 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+                    <i class="fas fa-calendar-alt text-gold ml-3"></i>
+                    جدول تقسيط المبالغ حسب الفصول الدراسية
+                </h4>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Installment Without Transportation -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover border-t-4 border-primary">
+                        <h5 class="text-xl font-bold text-primary mb-4 text-center">
+                            <i class="fas fa-walking ml-2"></i>
+                            بدون النقل المدرسي
+                        </h5>
+                        <div class="space-y-3" id="installmentWithoutTransport">
+                            <!-- Installment details will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Installment With Transportation -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover border-t-4 border-accent">
+                        <h5 class="text-xl font-bold text-accent mb-4 text-center">
+                            <i class="fas fa-bus ml-2"></i>
+                            مع النقل المدرسي
+                        </h5>
+                        <div class="space-y-3" id="installmentWithTransport">
+                            <!-- Installment details will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Installment Note -->
+                <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <div class="text-center">
+                        <h6 class="font-bold text-blue-800 dark:text-blue-200 mb-2">
+                            <i class="fas fa-info-circle ml-2"></i>
+                            ملاحظة هامة
+                        </h6>
+                        <p class="text-blue-700 dark:text-blue-300">
+                            تم تحديد نسب التقسيط حسب قرارات إدارة المحاسبة والإدارة المدرسية
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Payment Note -->
             <div class="mt-8 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4" id="paymentNote" style="display: none;">
-               
+                <div class="text-center">
+                    <h6 class="font-bold text-yellow-800 dark:text-yellow-200 mb-2">
+                        <i class="fas fa-exclamation-triangle ml-2"></i>
+                        شروط الدفع
+                    </h6>
+                    <p class="text-yellow-700 dark:text-yellow-300">
+                        يمكن دفع الرسوم على ثلاث دفعات موزعة على الفصول الدراسية الثلاثة حسب الجدول أعلاه
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -411,6 +470,22 @@
             }
         };
 
+        // Installment percentages according to accounting and administration decisions
+        const installmentPercentages = {
+            first: 35,  // First semester
+            second: 35, // Second semester  
+            third: 30   // Third semester
+        };
+
+        // Function to calculate installments
+        function calculateInstallments(totalAmount) {
+            return {
+                first: Math.round(totalAmount * installmentPercentages.first / 100),
+                second: Math.round(totalAmount * installmentPercentages.second / 100),
+                third: Math.round(totalAmount * installmentPercentages.third / 100)
+            };
+        }
+
         // Dark mode support
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
@@ -436,9 +511,14 @@
                 const grade = this.dataset.grade;
                 const fees = gradeFees[grade];
                 
-                // Show fees display
+                // Show fees display and installment details
                 document.getElementById('feesDisplay').style.display = 'grid';
+                document.getElementById('installmentDetails').style.display = 'block';
                 document.getElementById('paymentNote').style.display = 'block';
+                
+                // Calculate installments
+                const installmentsWithoutTransport = calculateInstallments(fees.totalWithoutTransport);
+                const installmentsWithTransport = calculateInstallments(fees.totalWithTransport);
                 
                 // Populate fees without transport
                 document.getElementById('feesWithoutTransport').innerHTML = `
@@ -484,6 +564,68 @@
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-bold">الإجمالي</span>
                             <span class="text-2xl font-bold">${fees.totalWithTransport.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                `;
+
+                // Populate installment details without transport
+                document.getElementById('installmentWithoutTransport').innerHTML = `
+                    <div class="semester-card bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-orange-800 dark:text-orange-200">الفصل الأول</span>
+                                <span class="text-sm text-orange-600 dark:text-orange-400 block">(${installmentPercentages.first}%)</span>
+                            </div>
+                            <span class="text-xl font-bold text-orange-800 dark:text-orange-200">${installmentsWithoutTransport.first.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                    <div class="semester-card bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-blue-800 dark:text-blue-200">الفصل الثاني</span>
+                                <span class="text-sm text-blue-600 dark:text-blue-400 block">(${installmentPercentages.second}%)</span>
+                            </div>
+                            <span class="text-xl font-bold text-blue-800 dark:text-blue-200">${installmentsWithoutTransport.second.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                    <div class="semester-card bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-green-800 dark:text-green-200">الفصل الثالث</span>
+                                <span class="text-sm text-green-600 dark:text-green-400 block">(${installmentPercentages.third}%)</span>
+                            </div>
+                            <span class="text-xl font-bold text-green-800 dark:text-green-200">${installmentsWithoutTransport.third.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                `;
+
+                // Populate installment details with transport
+                document.getElementById('installmentWithTransport').innerHTML = `
+                    <div class="semester-card bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-orange-800 dark:text-orange-200">الفصل الأول</span>
+                                <span class="text-sm text-orange-600 dark:text-orange-400 block">(${installmentPercentages.first}%)</span>
+                            </div>
+                            <span class="text-xl font-bold text-orange-800 dark:text-orange-200">${installmentsWithTransport.first.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                    <div class="semester-card bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-blue-800 dark:text-blue-200">الفصل الثاني</span>
+                                <span class="text-sm text-blue-600 dark:text-blue-400 block">(${installmentPercentages.second}%)</span>
+                            </div>
+                            <span class="text-xl font-bold text-blue-800 dark:text-blue-200">${installmentsWithTransport.second.toLocaleString()} درهم</span>
+                        </div>
+                    </div>
+                    <div class="semester-card bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-green-800 dark:text-green-200">الفصل الثالث</span>
+                                <span class="text-sm text-green-600 dark:text-green-400 block">(${installmentPercentages.third}%)</span>
+                            </div>
+                            <span class="text-xl font-bold text-green-800 dark:text-green-200">${installmentsWithTransport.third.toLocaleString()} درهم</span>
                         </div>
                     </div>
                 `;
