@@ -21,7 +21,7 @@
         @media print {
             @page {
                 size: A4;
-                margin: 0.5in;
+                margin: 0.3in;
             }
             body * {
                 visibility: hidden;
@@ -35,38 +35,49 @@
                 top: 0;
                 width: 100%;
                 height: 100vh;
-                transform: scale(0.85);
+                transform: scale(0.75);
                 transform-origin: top left;
                 overflow: hidden;
             }
-            .no-print {
+            .no-print, a[href], .print-hide {
                 display: none !important;
             }
             .document-border {
-                border: 3px solid #000;
+                border: 2px solid #000;
                 margin: 0;
-                padding: 15px;
+                padding: 10px;
                 background: white;
                 height: 100vh;
                 box-sizing: border-box;
                 overflow: hidden;
             }
             .bilingual-section {
-                gap: 20px;
-                margin: 10px 0;
+                gap: 15px;
+                margin: 8px 0;
+            }
+            .report-table {
+                margin: 8px 0;
             }
             .report-table th,
             .report-table td {
-                padding: 6px 4px;
-                font-size: 9px;
+                padding: 4px 3px;
+                font-size: 8px;
+                line-height: 1.1;
             }
             .signature-section {
-                margin-top: 20px;
-                gap: 15px;
+                margin-top: 15px;
+                gap: 10px;
             }
             .signature-box {
-                height: 70px;
-                font-size: 9px;
+                height: 60px;
+                font-size: 8px;
+            }
+            h2, h3, h4 {
+                margin: 5px 0;
+            }
+            p {
+                margin: 3px 0;
+                font-size: 10px;
             }
         }
         
@@ -342,6 +353,32 @@
                     <div class="bg-gradient-to-r from-primary to-secondary rounded-lg p-4 mt-4 text-white">
                         <p class="text-lg font-semibold">التسجيل مفتوح للعام الدراسي الجديد 2025 - 2026</p>
                     </div>
+                </div>
+
+                <!-- Student Status Selection -->
+                <div class="premium-card dark:premium-card rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
+                        <i class="fas fa-user-plus mr-2"></i>حالة الطالب - Student Status
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="student-status-option transport-option dark:bg-gray-800 dark:border-gray-600 selected" data-status="existing">
+                            <div class="text-center">
+                                <i class="fas fa-user-graduate text-3xl text-primary mb-3"></i>
+                                <h5 class="font-bold text-lg text-gray-800 dark:text-white">طالب مسجل مسبقاً</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Existing Student</p>
+                                <p class="text-xs text-gray-500 mt-2">لطالب مسجل في المدرسة ويحتاج تقرير رسوم</p>
+                            </div>
+                        </div>
+                        <div class="student-status-option transport-option dark:bg-gray-800 dark:border-gray-600" data-status="new">
+                            <div class="text-center">
+                                <i class="fas fa-user-plus text-3xl text-accent mb-3"></i>
+                                <h5 class="font-bold text-lg text-gray-800 dark:text-white">طالب جديد للتسجيل</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">New Student Registration</p>
+                                <p class="text-xs text-gray-500 mt-2">لطالب جديد يرغب في التسجيل بالمدرسة</p>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="studentStatus" id="student-status" value="existing">
                 </div>
                 
                 <form id="student-form" class="space-y-8">
@@ -798,6 +835,42 @@
                 updateFeesDisplay();
             });
         });
+
+        // Student status selection functionality
+        document.querySelectorAll('.student-status-option').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove selected class from all items
+                document.querySelectorAll('.student-status-option').forEach(i => i.classList.remove('selected'));
+                
+                // Add selected class to clicked item
+                this.classList.add('selected');
+                
+                // Get status data
+                const status = this.dataset.status;
+                document.getElementById('student-status').value = status;
+                
+                // Update labels and placeholders based on status
+                updateUIForStudentStatus(status);
+            });
+        });
+
+        function updateUIForStudentStatus(status) {
+            const isNewStudent = status === 'new';
+            
+            if (isNewStudent) {
+                // Update labels for new student registration
+                document.querySelector('h3[class*="fas fa-user-graduate"]').innerHTML = '<i class="fas fa-user-plus mr-2"></i>بيانات الطالب الجديد - New Student Information';
+                document.querySelector('[name="studentId"]').placeholder = 'سيتم إصدار رقم طالب جديد';
+                document.querySelector('[name="studentIdEn"]').placeholder = 'New student ID will be issued';
+                document.querySelector('[name="paidAmount"]').placeholder = 'رسوم التسجيل';
+            } else {
+                // Update labels for existing student
+                document.querySelector('h3[class*="fas fa-user-graduate"]').innerHTML = '<i class="fas fa-user-graduate mr-2"></i>بيانات الطالب - Student Information';
+                document.querySelector('[name="studentId"]').placeholder = '120187';
+                document.querySelector('[name="studentIdEn"]').placeholder = '120187';
+                document.querySelector('[name="paidAmount"]').placeholder = '10000';
+            }
+        }
 
         function updateFeesDisplay() {
             if (!selectedGrade) return;
