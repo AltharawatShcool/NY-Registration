@@ -140,6 +140,12 @@
             .text-primary, .text-blue-500, .text-green-500, .text-red-500 {
                 color: #000 !important;
             }
+            /* تحسين ملاحظة التسجيل للطباعة */
+            .registration-note {
+                background: #f9f9f9 !important;
+                color: #000 !important;
+                border: 1px solid #000 !important;
+            }
         }
         
         .uae-logo {
@@ -359,6 +365,17 @@
             text-align: center;
             font-size: 10px;
             color: #555;
+        }
+
+        /* تنسيق ملاحظة التسجيل */
+        .registration-note {
+            background: #fef3c7;
+            color: #d97706;
+            border: 1px solid #f59e0b;
+            border-radius: 4px;
+            padding: 6px;
+            margin: 4px 0;
+            font-size: 11px;
         }
     </style>
     <script>
@@ -1039,6 +1056,10 @@
             const today = new Date().toLocaleDateString('ar-SA');
             const todayEn = new Date().toLocaleDateString('en-US');
             
+            // Get student status
+            const studentStatus = document.getElementById('student-status').value;
+            const isNewStudent = studentStatus === 'new';
+            
             // Generate school logo HTML
             const schoolLogoHtml = schoolLogoData ? 
                 `<img src="${schoolLogoData}" class="logo-preview" alt="School Logo" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">` :
@@ -1089,6 +1110,7 @@
                         <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>الصف:</strong> ${data.gradeAr}</p>
                         <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>العام الدراسي:</strong> ${data.academicYear}</p>
                         <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>النقل المدرسي:</strong> ${includeTransport ? 'مع النقل' : 'بدون النقل'}</p>
+                        ${isNewStudent ? '<p class="registration-note" style="font-size: 11px; margin: 4px 0; color: #d97706; background: #fef3c7; padding: 6px; border-radius: 4px; border: 1px solid #f59e0b;"><strong>ملاحظة:</strong> الطالب يرغب بالتسجيل في المدرسة</p>' : ''}
                     </div>
                     <div class="english-section" style="text-align: left; direction: ltr;">
                         <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #000;">Student Information</h4>
@@ -1099,15 +1121,22 @@
                         <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Grade:</strong> ${data.gradeEn}</p>
                         <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Academic Year:</strong> ${data.academicYear}</p>
                         <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Transportation:</strong> ${includeTransport ? 'With Transport' : 'Without Transport'}</p>
+                        ${isNewStudent ? '<p class="registration-note" style="font-size: 11px; margin: 4px 0; color: #d97706; background: #fef3c7; padding: 6px; border-radius: 4px; border: 1px solid #f59e0b;"><strong>Note:</strong> Student wishes to register at the school</p>' : ''}
                     </div>
                 </div>
 
                 <div class="print-compact" style="margin: 20px 0; padding: 15px; background: #f8f8f8; border-radius: 8px; border-left: 4px solid #333;">
                     <p class="print-small" style="font-size: 11px; margin: 0; text-align: justify; line-height: 1.4; color: #000;">
-                        الرسوم الدراسية المستحقة في دائرة التعليم والمعرفة للعام الدراسي ${data.academicYear} لمدرسة ${data.schoolNameAr} كما هو مفصل في الجدول التالي:
+                        ${isNewStudent ? 
+                            `الرسوم الدراسية المطلوبة للتسجيل في دائرة التعليم والمعرفة للعام الدراسي ${data.academicYear} لمدرسة ${data.schoolNameAr} كما هو مفصل في الجدول التالي:` :
+                            `الرسوم الدراسية المستحقة في دائرة التعليم والمعرفة للعام الدراسي ${data.academicYear} لمدرسة ${data.schoolNameAr} كما هو مفصل في الجدول التالي:`
+                        }
                     </p>
                     <p class="print-small" style="font-size: 11px; margin: 8px 0 0 0; text-align: justify; line-height: 1.4; color: #000;">
-                        With approved fees for ${data.schoolNameEn} Grade (${data.gradeEn}) as detailed in the table below:
+                        ${isNewStudent ? 
+                            `Required registration fees for ${data.schoolNameEn} Grade (${data.gradeEn}) as detailed in the table below:` :
+                            `With approved fees for ${data.schoolNameEn} Grade (${data.gradeEn}) as detailed in the table below:`
+                        }
                     </p>
                 </div>
 
@@ -1159,10 +1188,16 @@
 
                 <div class="print-compact" style="margin: 20px 0; padding: 15px; background: #f8f8f8; border-radius: 8px; border-left: 4px solid #333;">
                     <p class="print-small" style="font-size: 10px; margin: 0; text-align: justify; line-height: 1.5; color: #000;">
-                        وعليه تشهد إدارة المدرسة بأن المعلومات المذكورة أعلاه صحيحة وفق السجلات المتوفرة، وقد أعطيت هذه الشهادة بناءً على طلب ولي الأمر لأغراض رسمية.
+                        ${isNewStudent ? 
+                            'وعليه تشهد إدارة المدرسة بأن المعلومات المذكورة أعلاه صحيحة وفق الرسوم المعتمدة، وقد أعطيت هذه الشهادة بناءً على طلب ولي الأمر لأغراض التسجيل الرسمي.' :
+                            'وعليه تشهد إدارة المدرسة بأن المعلومات المذكورة أعلاه صحيحة وفق السجلات المتوفرة، وقد أعطيت هذه الشهادة بناءً على طلب ولي الأمر لأغراض رسمية.'
+                        }
                     </p>
                     <p class="print-small" style="font-size: 10px; margin: 8px 0 0 0; text-align: justify; line-height: 1.5; color: #000;">
-                        Therefore, the school administration certifies that the above information is correct according to available records, and this certificate has been issued upon the request of the guardian for official purposes.
+                        ${isNewStudent ? 
+                            'Therefore, the school administration certifies that the above information is correct according to approved fees, and this certificate has been issued upon the request of the guardian for official registration purposes.' :
+                            'Therefore, the school administration certifies that the above information is correct according to available records, and this certificate has been issued upon the request of the guardian for official purposes.'
+                        }
                     </p>
                 </div>
 
