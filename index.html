@@ -41,7 +41,7 @@
                 display: none !important;
             }
             .document-border {
-                border: 3px solid #000 !important;
+                border: none !important;
                 margin: 0 !important;
                 padding: 20px !important;
                 background: white !important;
@@ -51,6 +51,7 @@
                 max-width: 100% !important;
                 min-height: 95vh !important;
                 page-break-inside: avoid !important;
+                box-shadow: none !important;
             }
             .bilingual-section {
                 gap: 15px !important;
@@ -75,8 +76,8 @@
             .signature-box {
                 height: 60px !important;
                 font-size: 9px !important;
-                border: 2px solid #000 !important;
-                background: #f8f8f8 !important;
+                border: none !important;
+                background: none !important;
             }
             h2 {
                 font-size: 16px !important;
@@ -99,7 +100,6 @@
                 line-height: 1.3 !important;
                 color: #000 !important;
             }
-            /* تخفيف الألوان للطباعة */
             .logo-preview, .school-logo, .uae-logo {
                 width: 70px !important;
                 height: 70px !important;
@@ -108,7 +108,6 @@
                 color: #000 !important;
                 border: 2px solid #000 !important;
             }
-            /* إزالة الخلفيات الملونة */
             table thead tr {
                 background: #f0f0f0 !important;
                 color: #000 !important;
@@ -117,7 +116,6 @@
                 background: #fff !important;
                 color: #000 !important;
             }
-            /* تبسيط الخلفيات للطباعة */
             div[style*="background"] {
                 background: #f8f8f8 !important;
                 color: #000 !important;
@@ -131,16 +129,13 @@
                 line-height: 1.2 !important;
                 color: #000 !important;
             }
-            /* إزالة الظلال */
             * {
                 box-shadow: none !important;
                 text-shadow: none !important;
             }
-            /* تحسين النصوص الملونة */
             .text-primary, .text-blue-500, .text-green-500, .text-red-500 {
                 color: #000 !important;
             }
-            /* تحسين ملاحظة التسجيل للطباعة */
             .registration-note {
                 background: #f9f9f9 !important;
                 color: #000 !important;
@@ -281,14 +276,13 @@
         }
         
         .signature-box {
-            border: 2px solid #000;
             height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 11px;
-            background: #fafafa;
-            border-radius: 8px;
+            background: none;
+            border: none;
         }
         
         .header-gradient {
@@ -357,7 +351,6 @@
             box-shadow: 0 4px 8px rgba(93, 92, 222, 0.3);
         }
 
-        /* تحسينات خاصة بالتقرير المطبوع */
         .report-footer {
             margin-top: 30px;
             padding-top: 20px;
@@ -367,7 +360,6 @@
             color: #555;
         }
 
-        /* تنسيق ملاحظة التسجيل */
         .registration-note {
             background: #fef3c7;
             color: #d97706;
@@ -1053,8 +1045,11 @@
             }
             
             const totals = calculateTotals();
-            const today = new Date().toLocaleDateString('ar-SA');
-            const todayEn = new Date().toLocaleDateString('en-US');
+            const today = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
             
             // Get student status
             const studentStatus = document.getElementById('student-status').value;
@@ -1072,71 +1067,46 @@
             
             const reportHTML = `
                 <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 3px solid #000; padding-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
                     ${schoolLogoHtml}
                     <div style="text-align: center; flex-grow: 1; padding: 0 20px;">
-                        <h2 style="font-size: 18px; font-weight: bold; margin: 0; color: #000;">دائره التعليم والمعرفة</h2>
-                        <h3 style="font-size: 16px; margin: 5px 0; color: #333;">DEPARTMENT OF EDUCATION AND KNOWLEDGE</h3>
-                        <div style="background: #f0f0f0; color: #000; padding: 8px 15px; border-radius: 8px; margin: 8px 0; border: 2px solid #000;">
-                            <h4 style="font-size: 18px; font-weight: bold; margin: 0;">تقرير الرسوم الدراسية</h4>
-                            <p style="font-size: 14px; margin: 0;">SCHOOL FEES REPORT</p>
-                        </div>
+                        <h2 style="font-size: 20px; font-weight: bold; margin: 10px 0; color: #000;">تقرير الرسوم الدراسية</h2>
+                        <h3 style="font-size: 16px; margin: 5px 0; color: #000;">SCHOOL FEES REPORT</h3>
                     </div>
                     ${secondaryLogoHtml}
                 </div>
 
-                <!-- School Information -->
-                <div class="bilingual-section print-compact" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 20px; padding: 15px; background: #f8f8f8; border-radius: 8px; border: 1px solid #ddd;">
+                <!-- School and Student Information Combined -->
+                <div class="bilingual-section print-compact" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 25px;">
                     <div class="arabic-section" style="text-align: right; direction: rtl;">
-                        <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #000;">معلومات المدرسة</h4>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>اسم المدرسة:</strong> ${data.schoolNameAr}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>رقم المدرسة:</strong> ${data.schoolId}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>اسم المدرسة:</strong> ${data.schoolNameAr}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>رقم المدرسة:</strong> ${data.schoolId}</p>
+                        <p style="font-size: 12px; margin: 8px 0; color: #000;">تشهد إدارة المدرسة بأن الطالب/الطالبة: <strong>${data.studentNameAr}</strong></p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>رقم الهوية:</strong> ${data.emiratesId}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>تاريخ الميلاد:</strong> ${data.birthDate}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>رقم الطالب:</strong> ${data.studentId}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>الصف:</strong> ${data.gradeAr}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>السنة الدراسية:</strong> ${data.academicYear}</p>
                     </div>
                     <div class="english-section" style="text-align: left; direction: ltr;">
-                        <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #000;">School Information</h4>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>School Name:</strong> ${data.schoolNameEn}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>School ID:</strong> ${data.schoolId}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>School Name:</strong> ${data.schoolNameEn}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>School ID:</strong> ${data.schoolId}</p>
+                        <p style="font-size: 12px; margin: 8px 0; color: #000;">The school administration certifies that the student: <strong>${data.studentNameEn}</strong></p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>Emirates ID:</strong> ${data.emiratesId}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>Birth Date:</strong> ${data.birthDate}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>Student ID:</strong> ${data.studentId}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>Grade:</strong> ${data.gradeEn}</p>
+                        <p style="font-size: 12px; margin: 6px 0; color: #000;"><strong>Academic Year:</strong> ${data.academicYear}</p>
                     </div>
                 </div>
 
-                <!-- Student Information -->
-                <div class="bilingual-section print-compact" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 20px;">
-                    <div class="arabic-section" style="text-align: right; direction: rtl;">
-                        <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #000;">معلومات الطالب</h4>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>اسم الطالب:</strong> ${data.studentNameAr}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>رقم الطالب:</strong> ${data.studentId}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>رقم الهوية:</strong> ${data.emiratesId}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>تاريخ الميلاد:</strong> ${data.birthDate}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>الصف:</strong> ${data.gradeAr}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>العام الدراسي:</strong> ${data.academicYear}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>النقل المدرسي:</strong> ${includeTransport ? 'مع النقل' : 'بدون النقل'}</p>
-                        ${isNewStudent ? '<p class="registration-note" style="font-size: 11px; margin: 4px 0; color: #d97706; background: #fef3c7; padding: 6px; border-radius: 4px; border: 1px solid #f59e0b;"><strong>ملاحظة:</strong> الطالب يرغب بالتسجيل في المدرسة</p>' : ''}
-                    </div>
-                    <div class="english-section" style="text-align: left; direction: ltr;">
-                        <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #000;">Student Information</h4>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Student Name:</strong> ${data.studentNameEn}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Student ID:</strong> ${data.studentId}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Emirates ID:</strong> ${data.emiratesId}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Birth Date:</strong> ${data.birthDate}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Grade:</strong> ${data.gradeEn}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Academic Year:</strong> ${data.academicYear}</p>
-                        <p style="font-size: 11px; margin: 4px 0; color: #000;"><strong>Transportation:</strong> ${includeTransport ? 'With Transport' : 'Without Transport'}</p>
-                        ${isNewStudent ? '<p class="registration-note" style="font-size: 11px; margin: 4px 0; color: #d97706; background: #fef3c7; padding: 6px; border-radius: 4px; border: 1px solid #f59e0b;"><strong>Note:</strong> Student wishes to register at the school</p>' : ''}
-                    </div>
-                </div>
-
-                <div class="print-compact" style="margin: 20px 0; padding: 15px; background: #f8f8f8; border-radius: 8px; border-left: 4px solid #333;">
-                    <p class="print-small" style="font-size: 11px; margin: 0; text-align: justify; line-height: 1.4; color: #000;">
-                        ${isNewStudent ? 
-                            `الرسوم الدراسية المطلوبة للتسجيل في دائرة التعليم والمعرفة للعام الدراسي ${data.academicYear} لمدرسة ${data.schoolNameAr} كما هو مفصل في الجدول التالي:` :
-                            `الرسوم الدراسية المستحقة في دائرة التعليم والمعرفة للعام الدراسي ${data.academicYear} لمدرسة ${data.schoolNameAr} كما هو مفصل في الجدول التالي:`
-                        }
+                <!-- Fees Introduction -->
+                <div class="print-compact" style="text-align: center; margin: 25px 0; padding: 20px; background: #f9f9f9; border-radius: 10px;">
+                    <p class="print-small" style="font-size: 14px; margin: 0 0 8px 0; font-weight: bold; color: #000; line-height: 1.6;">
+                        الرسوم الدراسية المعتمدة من قبل دائرة التعليم والمعرفة للعام الدراسي ${data.academicYear} لمدرسة ${data.schoolNameAr} الصف ${data.gradeAr} كالآتي:
                     </p>
-                    <p class="print-small" style="font-size: 11px; margin: 8px 0 0 0; text-align: justify; line-height: 1.4; color: #000;">
-                        ${isNewStudent ? 
-                            `Required registration fees for ${data.schoolNameEn} Grade (${data.gradeEn}) as detailed in the table below:` :
-                            `With approved fees for ${data.schoolNameEn} Grade (${data.gradeEn}) as detailed in the table below:`
-                        }
+                    <p class="print-small" style="font-size: 12px; margin: 0; color: #555; line-height: 1.5; font-style: italic;">
+                        The school fees approved by the Department of Education and Knowledge for the academic year ${data.academicYear} for ${data.schoolNameEn} Grade ${data.gradeEn} are as follows:
                     </p>
                 </div>
 
@@ -1186,55 +1156,30 @@
                     </tbody>
                 </table>
 
-                <div class="print-compact" style="margin: 20px 0; padding: 15px; background: #f8f8f8; border-radius: 8px; border-left: 4px solid #333;">
-                    <p class="print-small" style="font-size: 10px; margin: 0; text-align: justify; line-height: 1.5; color: #000;">
-                        ${isNewStudent ? 
-                            'وعليه تشهد إدارة المدرسة بأن المعلومات المذكورة أعلاه صحيحة وفق الرسوم المعتمدة، وقد أعطيت هذه الشهادة بناءً على طلب ولي الأمر لأغراض التسجيل الرسمي.' :
-                            'وعليه تشهد إدارة المدرسة بأن المعلومات المذكورة أعلاه صحيحة وفق السجلات المتوفرة، وقد أعطيت هذه الشهادة بناءً على طلب ولي الأمر لأغراض رسمية.'
-                        }
-                    </p>
-                    <p class="print-small" style="font-size: 10px; margin: 8px 0 0 0; text-align: justify; line-height: 1.5; color: #000;">
-                        ${isNewStudent ? 
-                            'Therefore, the school administration certifies that the above information is correct according to approved fees, and this certificate has been issued upon the request of the guardian for official registration purposes.' :
-                            'Therefore, the school administration certifies that the above information is correct according to available records, and this certificate has been issued upon the request of the guardian for official purposes.'
-                        }
+                <!-- Financial Review Statement -->
+                <div class="print-compact" style="margin: 30px 0; padding: 15px 0; text-align: right; direction: rtl;">
+                    <p class="print-small" style="font-size: 12px; margin: 0; line-height: 1.5; color: #000;">
+                        جميع المعلومات المالية تمت مراجعتها أو التدقيق عليها عن طريق المحاسب وتحت مسؤوليته وهذا إقرار منه بذلك.
                     </p>
                 </div>
 
                 <!-- Signature Section -->
                 <div class="signature-section print-compact" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px;">
-                    <div class="signature-box print-small" style="border: 2px solid #000; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; background: #f8f8f8; border-radius: 8px;">
-                        <div style="text-align: center; padding: 8px;">
-                            <strong style="color: #000;">المحاسب</strong><br>
-                            <small style="color: #000; font-size: 9px;">Accountant</small><br>
-                            <div style="margin-top: 8px; border-top: 1px solid #000; padding-top: 8px; width: 70px;"></div>
-                        </div>
+                    <div class="signature-box print-small" style="height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; text-align: center;">
+                        <strong style="color: #000;">المحاسب</strong><br>
+                        <small style="color: #000; font-size: 10px;">Accountant</small><br>
+                        <div style="margin-top: 15px; border-top: 1px solid #000; padding-top: 8px; width: 80px;"></div>
                     </div>
-                    <div class="signature-box print-small" style="border: 2px solid #000; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; background: #f8f8f8; border-radius: 8px;">
-                        <div style="text-align: center; padding: 8px;">
-                            <strong style="color: #000;">ختم المدرسة</strong><br>
-                            <small style="color: #000; font-size: 9px;">School Stamp</small><br>
-                            <div style="margin-top: 8px; width: 50px; height: 35px; border: 2px dashed #000; border-radius: 50%;"></div>
-                        </div>
+                    <div class="signature-box print-small" style="height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; text-align: center;">
+                        <strong style="color: #000;">ختم المدرسة</strong><br>
+                        <small style="color: #000; font-size: 10px;">School Stamp</small><br>
+                        <div style="margin-top: 10px; width: 50px; height: 30px; border: 2px dashed #000; border-radius: 50%;"></div>
                     </div>
-                    <div class="signature-box print-small" style="border: 2px solid #000; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; background: #f8f8f8; border-radius: 8px;">
-                        <div style="text-align: center; padding: 8px;">
-                            <strong style="color: #000;">التاريخ</strong><br>
-                            <small style="color: #000; font-size: 9px;">Date</small><br>
-                            <div style="margin-top: 4px; font-weight: bold; color: #000; font-size: 9px;">${today}</div>
-                            <div style="font-size: 8px; color: #000;">${todayEn}</div>
-                        </div>
+                    <div class="signature-box print-small" style="height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; text-align: center;">
+                        <strong style="color: #000;">التاريخ</strong><br>
+                        <small style="color: #000; font-size: 10px;">Date</small><br>
+                        <div style="margin-top: 8px; font-weight: bold; color: #000; font-size: 11px;">${today}</div>
                     </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="report-footer" style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #000; text-align: center;">
-                    <p style="font-size: 10px; color: #000; margin: 0; font-weight: bold;">
-                        جميع الحقوق محفوظة لمدرسة الثروات الوطنية الخاصة
-                    </p>
-                    <p style="font-size: 9px; color: #555; margin: 2px 0 0 0;">
-                        All Rights Reserved - Altharawat National Private School
-                    </p>
                 </div>
             `;
             
