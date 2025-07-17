@@ -101,8 +101,8 @@
                 color: #000 !important;
             }
             .logo-preview, .school-logo, .uae-logo {
-                width: 70px !important;
-                height: 70px !important;
+                width: 100px !important;
+                height: 100px !important;
                 font-size: 9px !important;
                 background: #f0f0f0 !important;
                 color: #000 !important;
@@ -144,8 +144,8 @@
         }
         
         .uae-logo {
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             background: linear-gradient(135deg, #B91C1C 0%, #DC2626 50%, #EF4444 100%);
             border-radius: 12px;
             display: flex;
@@ -161,8 +161,8 @@
         }
         
         .school-logo {
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
             border-radius: 12px;
             display: flex;
@@ -179,8 +179,8 @@
         }
         
         .logo-preview {
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             border-radius: 12px;
             object-fit: cover;
             border: 2px solid #e5e7eb;
@@ -188,8 +188,8 @@
         }
         
         .logo-upload-area {
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             border: 2px dashed #d1d5db;
             border-radius: 12px;
             display: flex;
@@ -1045,11 +1045,8 @@
             }
             
             const totals = calculateTotals();
-            const today = new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
+            const today = new Date();
+            const arabicDate = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
             
             // Get student status
             const studentStatus = document.getElementById('student-status').value;
@@ -1057,12 +1054,12 @@
             
             // Generate school logo HTML
             const schoolLogoHtml = schoolLogoData ? 
-                `<img src="${schoolLogoData}" class="logo-preview" alt="School Logo" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">` :
+                `<img src="${schoolLogoData}" class="logo-preview" alt="School Logo" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover;">` :
                 `<div class="school-logo">شعار<br>المدرسة</div>`;
             
             // Generate secondary logo HTML
             const secondaryLogoHtml = secondaryLogoData ? 
-                `<img src="${secondaryLogoData}" class="logo-preview" alt="Secondary Logo" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">` :
+                `<img src="${secondaryLogoData}" class="logo-preview" alt="Secondary Logo" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover;">` :
                 `<div class="uae-logo">دولة<br>الإمارات</div>`;
             
             const reportHTML = `
@@ -1141,7 +1138,6 @@
                             <th class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-size: 10px; font-weight: bold;">الرسوم المتبقية<br><small>Remaining Fees</small></th>
                             <th class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-size: 10px; font-weight: bold;">الرسوم المدفوعة<br><small>Paid Amount</small></th>
                             <th class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-size: 10px; font-weight: bold;">المصروفات المقررة<br><small>Approved Fees</small></th>
-                            <th class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-size: 10px; font-weight: bold;">حالة الدفع<br><small>Payment Status</small></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1149,9 +1145,6 @@
                             <td class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-weight: bold; font-size: 11px; color: #000;">${totals.remaining.toFixed(2)} AED</td>
                             <td class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-size: 10px; color: #000; font-weight: bold;">${totals.paid.toFixed(2)} AED</td>
                             <td class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-size: 10px; color: #000; font-weight: bold;">${totals.total.toFixed(2)} AED</td>
-                            <td class="print-small" style="border: 1px solid #000; padding: 10px 6px; text-align: center; font-size: 10px; color: #000; font-weight: bold;">
-                                ${totals.remaining <= 0 ? 'مكتمل<br><small>Completed</small>' : 'مستحق<br><small>Pending</small>'}
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -1178,7 +1171,7 @@
                     <div class="signature-box print-small" style="height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; text-align: center;">
                         <strong style="color: #000;">التاريخ</strong><br>
                         <small style="color: #000; font-size: 10px;">Date</small><br>
-                        <div style="margin-top: 8px; font-weight: bold; color: #000; font-size: 11px;">${today}</div>
+                        <div style="margin-top: 8px; font-weight: bold; color: #000; font-size: 11px;">${arabicDate}</div>
                     </div>
                 </div>
             `;
