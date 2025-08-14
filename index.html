@@ -403,6 +403,25 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
     </style>
     <script>
         tailwind.config = {
@@ -830,6 +849,54 @@
             </div>
         </div>
 
+        <!-- Word Template Upload Modal -->
+        <div id="word-template-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-50 hidden">
+            <div class="modal-content bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full mx-4 p-8">
+                <div class="text-center mb-8">
+                    <div class="pulse-animation mb-4">
+                        <i class="fas fa-file-word text-6xl text-blue-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">مطلوب رفع مستند Word</h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg">يجب رفع مستند Word معتمد لإنشاء التقرير</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="word-upload-area dark:word-upload-area" onclick="document.getElementById('modal-word-input').click()">
+                        <i class="fas fa-cloud-upload-alt text-5xl text-gray-400 mb-4"></i>
+                        <h3 class="font-bold text-xl text-gray-700 dark:text-gray-300 mb-3">اختر مستند Word</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-center">
+                            قم برفع المستند المعتمد من المدرسة<br>
+                            (يجب أن يحتوي على placeholder للبيانات)
+                        </p>
+                        <div class="mt-4 text-sm text-gray-400">
+                            صيغ مدعومة: .docx, .doc
+                        </div>
+                    </div>
+                    <input type="file" id="modal-word-input" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="hidden" onchange="loadWordTemplateFromModal(this)">
+                    
+                    <div id="modal-upload-status" class="text-center hidden">
+                        <div class="loading-spinner"></div>
+                        <p class="text-gray-600 dark:text-gray-400">جار تحميل المستند...</p>
+                    </div>
+
+                    <div class="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                        <h4 class="font-bold text-yellow-800 dark:text-yellow-200 mb-2">تعليمات مهمة:</h4>
+                        <ul class="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
+                            <li>• يجب أن يحتوي المستند على Placeholders مثل {{اسم_الطالب}}</li>
+                            <li>• سيتم استبدال هذه Placeholders بالبيانات المدخلة</li>
+                            <li>• سيحافظ التقرير على نفس شكل وتنسيق المستند المرفق</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex justify-center space-x-4 space-x-reverse">
+                        <button onclick="closeWordTemplateModal()" class="px-6 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 transition-colors">
+                            إلغاء
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Report Preview Section -->
         <div id="preview-section" class="hidden">
             <div class="no-print flex justify-center space-x-4 space-x-reverse p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 border-b shadow-lg">
@@ -967,6 +1034,63 @@
             document.getElementById('preview-section').classList.remove('hidden');
             document.getElementById('form-tab').className = 'px-6 py-3 text-sm font-medium text-white hover:bg-white hover:bg-opacity-20 rounded-lg border border-white border-opacity-30 transition-all';
             document.getElementById('preview-tab').className = 'px-6 py-3 text-sm font-medium bg-white text-primary rounded-lg shadow-md hover:shadow-lg transition-all';
+        }
+
+        // Word template modal functions
+        function showWordTemplateModal() {
+            document.getElementById('word-template-modal').classList.remove('hidden');
+        }
+
+        function closeWordTemplateModal() {
+            document.getElementById('word-template-modal').classList.add('hidden');
+        }
+
+        function loadWordTemplateFromModal(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // Show loading state
+                document.getElementById('modal-upload-status').classList.remove('hidden');
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const arrayBuffer = e.target.result;
+                    
+                    // Use mammoth to convert docx to HTML
+                    mammoth.convertToHtml({arrayBuffer: arrayBuffer})
+                        .then(function(result) {
+                            wordTemplateHTML = result.value; // The generated HTML
+                            wordTemplateContent = result.value; // Store original content
+                            
+                            // Update main form preview
+                            document.getElementById('word-template-preview').innerHTML = wordTemplateHTML;
+                            document.getElementById('word-template-preview').classList.remove('hidden');
+                            
+                            // Show success message in main form
+                            document.getElementById('word-file-info').classList.remove('hidden');
+                            document.getElementById('word-file-name').textContent = file.name;
+                            
+                            // Hide upload area in main form
+                            document.querySelector('.word-upload-area').style.display = 'none';
+                            
+                            // Also update the main input
+                            document.getElementById('word-template-input').files = input.files;
+                            
+                            // Hide loading and close modal
+                            document.getElementById('modal-upload-status').classList.add('hidden');
+                            closeWordTemplateModal();
+                            
+                            // Proceed with report generation
+                            generateReportWithTemplate();
+                        })
+                        .catch(function(error) {
+                            console.error('Error loading Word document:', error);
+                            showCustomAlert('خطأ في تحميل مستند Word. تأكد من أن الملف صحيح.');
+                            document.getElementById('modal-upload-status').classList.add('hidden');
+                        });
+                };
+                reader.readAsArrayBuffer(file);
+            }
         }
 
         // Word template functionality
@@ -1232,6 +1356,16 @@
                 return;
             }
 
+            // Check if Word template is required and available
+            if (!wordTemplateHTML) {
+                showWordTemplateModal();
+                return;
+            }
+
+            generateReportWithTemplate();
+        }
+
+        function generateReportWithTemplate() {
             const formData = new FormData(document.getElementById('student-form'));
             const data = Object.fromEntries(formData.entries());
             
@@ -1244,153 +1378,8 @@
                 }
             }
             
-            const totals = calculateTotals();
-            const today = new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
-            
-            let reportHTML = '';
-            
-            // Check if Word template is available
-            if (wordTemplateHTML) {
-                // Use Word template with replaced data
-                reportHTML = replaceTemplateData(wordTemplateHTML, data);
-            } else {
-                // Use default template
-                // Get student status
-                const studentStatus = document.getElementById('student-status').value;
-                const isNewStudent = studentStatus === 'new';
-                
-                // Generate UAE logo HTML (now on the left as in the image)
-                const uaeLogoHtml = secondaryLogoData ? 
-                    `<img src="${secondaryLogoData}" class="logo-preview" alt="UAE Logo" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">` :
-                    `<div class="uae-logo">دولة<br>الإمارات</div>`;
-                
-                // Generate school logo HTML (now on the right as in the image)
-                const schoolLogoHtml = schoolLogoData ? 
-                    `<img src="${schoolLogoData}" class="logo-preview" alt="School Logo" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">` :
-                    `<div class="school-logo">شعار<br>المدرسة</div>`;
-                
-                reportHTML = `
-                    <!-- Header matching the image layout exactly -->
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-                        ${uaeLogoHtml}
-                        <div style="text-align: center; flex-grow: 1; padding: 0 15px;">
-                            <h2 style="font-size: 18px; font-weight: bold; margin: 8px 0; color: #000;">تقرير الرسوم الدراسية</h2>
-                            <h3 style="font-size: 14px; margin: 4px 0; color: #000;">SCHOOL FEES REPORT</h3>
-                        </div>
-                        ${schoolLogoHtml}
-                    </div>
-
-                    <!-- School and Student Information to match the image -->
-                    <div class="bilingual-section print-compact" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 20px;">
-                        <div class="arabic-section" style="text-align: right; direction: rtl;">
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>اسم المدرسة:</strong> ${data.schoolNameAr}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>رقم المدرسة:</strong> ${data.schoolId}</p>
-                            <p style="font-size: 11px; margin: 8px 0; color: #000;">تشهد إدارة المدرسة بأن الطالب/الطالبة: <strong>${data.studentNameAr}</strong></p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>رقم الهوية:</strong> ${data.emiratesId}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>تاريخ الميلاد:</strong> ${data.birthDate}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>رقم الطالب:</strong> ${data.studentId}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>الصف:</strong> ${data.gradeAr}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>السنة الدراسية:</strong> ${data.academicYear}</p>
-                        </div>
-                        <div class="english-section" style="text-align: left; direction: ltr;">
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>School Name:</strong> ${data.schoolNameEn}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>School ID:</strong> ${data.schoolId}</p>
-                            <p style="font-size: 11px; margin: 8px 0; color: #000;">The school administration certifies that the student: <strong>${data.studentNameEn}</strong></p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>Emirates ID:</strong> ${data.emiratesId}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>Birth Date:</strong> ${data.birthDate}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>Student ID:</strong> ${data.studentId}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>Grade:</strong> ${data.gradeEn}</p>
-                            <p style="font-size: 11px; margin: 5px 0; color: #000;"><strong>Academic Year:</strong> ${data.academicYear}</p>
-                        </div>
-                    </div>
-
-                    <!-- Fees Introduction to match the image -->
-                    <div class="print-compact" style="text-align: center; margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 8px;">
-                        <p class="print-small" style="font-size: 12px; margin: 0 0 6px 0; font-weight: bold; color: #000; line-height: 1.5;">
-                            الرسوم الدراسية المعتمدة من قبل دائرة التعليم والمعرفة للعام الدراسي ${data.academicYear} لمدرسة ${data.schoolNameAr} الصف ${data.gradeAr} كالآتي:
-                        </p>
-                        <p class="print-small" style="font-size: 10px; margin: 0; color: #555; line-height: 1.4; font-style: italic;">
-                            The school fees approved by the Department of Education and Knowledge for the academic year ${data.academicYear} for ${data.schoolNameEn} Grade ${data.gradeEn} are as follows:
-                        </p>
-                    </div>
-
-                    <!-- Main Fees Table to match the image exactly -->
-                    <table class="report-table print-compact" style="width: 100%; border-collapse: collapse; margin: 15px 0; border: 2px solid #000;">
-                        <thead>
-                            <tr style="background: #f0f0f0; color: #000;">
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">السنة الدراسية<br><small>Grade/Year</small></th>
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">الرسوم الدراسية<br><small>Academic Tuition</small></th>
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">الكتب الدراسية<br><small>Books</small></th>
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">الزي المدرسي<br><small>Uniform</small></th>
-                                ${includeTransport ? '<th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">المواصلات<br><small>Transportation</small></th>' : ''}
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">المجموع الكلي<br><small>Total Amount</small></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: #fff;">
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000;">${data.gradeAr}<br><small>${data.gradeEn}</small></td>
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000;">${totals.tuition.toFixed(2)}</td>
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000;">${totals.books.toFixed(2)}</td>
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000;">${totals.uniform.toFixed(2)}</td>
-                                ${includeTransport ? `<td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000;">${totals.transport.toFixed(2)}</td>` : ''}
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 10px; color: #000;">${totals.total.toFixed(2)} AED</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Payment Summary Table to match the image -->
-                    <table class="report-table print-compact" style="width: 100%; border-collapse: collapse; margin: 15px 0; border: 2px solid #000;">
-                        <thead>
-                            <tr style="background: #f0f0f0; color: #000;">
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">حالة الدفع<br><small>Payment Status</small></th>
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">المصروفات المقررة<br><small>Approved Fees</small></th>
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">الرسوم المدفوعة<br><small>Paid Amount</small></th>
-                                <th class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; font-weight: bold;">الرسوم المتبقية<br><small>Remaining Fees</small></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: #fff;">
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000; font-weight: bold;">
-                                    ${totals.remaining <= 0 ? 'مكتمل<br><small>Completed</small>' : 'مستحق<br><small>Pending</small>'}
-                                </td>
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000; font-weight: bold;">${totals.total.toFixed(2)} AED</td>
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-size: 9px; color: #000; font-weight: bold;">${totals.paid.toFixed(2)} AED</td>
-                                <td class="print-small" style="border: 1px solid #000; padding: 8px 4px; text-align: center; font-weight: bold; font-size: 10px; color: #000;">${totals.remaining.toFixed(2)} AED</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Financial Review Statement to match the image -->
-                    <div class="print-compact" style="margin: 25px 0; padding: 12px 0; text-align: right; direction: rtl;">
-                        <p class="print-small" style="font-size: 11px; margin: 0; line-height: 1.4; color: #000;">
-                            جميع المعلومات المالية تمت مراجعتها أو التدقيق عليها عن طريق المحاسب وتحت مسؤوليته وهذا إقرار منه بذلك.
-                        </p>
-                    </div>
-
-                    <!-- Signature Section to match the image -->
-                    <div class="signature-section print-compact" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 25px;">
-                        <div class="signature-box print-small" style="height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; text-align: center;">
-                            <strong style="color: #000;">التاريخ</strong><br>
-                            <small style="color: #000; font-size: 9px;">Date</small><br>
-                            <div style="margin-top: 6px; font-weight: bold; color: #000; font-size: 10px;">${today}</div>
-                        </div>
-                        <div class="signature-box print-small" style="height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; text-align: center;">
-                            <strong style="color: #000;">ختم المدرسة</strong><br>
-                            <small style="color: #000; font-size: 9px;">School Stamp</small><br>
-                            <div style="margin-top: 8px; width: 45px; height: 25px; border: 2px dashed #000; border-radius: 50%;"></div>
-                        </div>
-                        <div class="signature-box print-small" style="height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; text-align: center;">
-                            <strong style="color: #000;">المحاسب</strong><br>
-                            <small style="color: #000; font-size: 9px;">Accountant</small><br>
-                            <div style="margin-top: 12px; border-top: 1px solid #000; padding-top: 6px; width: 70px;"></div>
-                        </div>
-                    </div>
-                `;
-            }
+            // Use Word template with replaced data
+            const reportHTML = replaceTemplateData(wordTemplateHTML, data);
             
             document.getElementById('report-content').innerHTML = reportHTML;
             showPreviewSection();
